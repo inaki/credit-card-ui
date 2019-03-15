@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import productImage from '../../images/opz.jpg';
 import CreditCard from '../CreditCard';
-import InputMask from 'react-input-mask'
+import InputMask from 'react-input-mask';
+import uniqid from 'uniqid';
+import axios from 'axios';
 
 import {
     Button,
@@ -39,22 +41,39 @@ const styles = theme => ({
 });
 
 function getSteps() {
-    return ['OP-Z', 'Personal Info', 'Payment', 'Complete Purchase'];
+    return ['OP-Z', 'Billing Info', 'Payment', 'Complete Purchase'];
 }
 
 class Checkout extends React.Component {
     state = {
         activeStep: 0,
-        address: {
-            street: null,
-            city: null, 
-            zipcode: null,
-            country: null
-        },
+        street: '',
+        city: '', 
+        zipcode: '',
+        country: '',
         cardnumber: '',
         expiration: '',
         fullname: ''
     };
+
+    completeTransaction = () => {
+        axios.post('http://localhost:3000/checkouts', {
+            address: {
+                street: this.state.street,
+                zipcode: this.state.zipcode,
+                country: this.state.country,
+                city: this.state.city
+            },
+            card: { cardnumber: this.state.cardnumber, expiration: this.state.expiration, fullname: this.state.fullname},
+            fullname: this.state.fullname
+        })
+        .then(function (response) {
+        console.log(response);
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+    }
 
     getStepContent = (step) => {
         switch (step) {
@@ -77,6 +96,7 @@ class Checkout extends React.Component {
                             name="street"
                             margin="normal"
                             variant="outlined"
+                            onChange={this.handleStepsInput}
                             fullWidth
                         />  
                         <div style={{display: 'flex'}}>
@@ -92,11 +112,12 @@ class Checkout extends React.Component {
                                 name="city"
                                 margin="normal"
                                 variant="outlined"
+                                onChange={this.handleStepsInput}
                             />
                             <TextField
                                 InputProps={
                                     {style: {
-                                        width: 95
+                                        width: 90
                                     }}
                                 }
                                 id="zipcode"
@@ -105,6 +126,7 @@ class Checkout extends React.Component {
                                 name="zipcode"
                                 margin="normal"
                                 variant="outlined"
+                                onChange={this.handleStepsInput}
                             />
                         </div>
                         <TextField
@@ -115,6 +137,7 @@ class Checkout extends React.Component {
                             margin="normal"
                             variant="outlined"
                             fullWidth
+                            onChange={this.handleStepsInput}
                         />  
                     </div>
                 );
@@ -164,7 +187,7 @@ class Checkout extends React.Component {
                                         return <TextField
                                             InputProps={
                                                 {style: {
-                                                    width: 81
+                                                    width: 90
                                                 }}
                                             }
                                             id="card-number"
@@ -211,8 +234,11 @@ class Checkout extends React.Component {
     }
 
     handleNext = () => {
+        if(this.state.activeStep === 3) {
+            this.completeTransaction();
+        }
         this.setState(state => ({
-        activeStep: state.activeStep + 1,
+            activeStep: state.activeStep + 1,
         }));
     };
 
@@ -237,22 +263,22 @@ class Checkout extends React.Component {
                     <div className={classes.actionsContainer}>
                     <div>
                         <Button
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={classes.button}
-                        >
-                        Back
+                            disabled={activeStep === 0}
+                            onClick={this.handleBack}
+                            className={classes.button}
+                            >
+                            Back
                         </Button>
                         <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={classes.button}
-                        >
-                        {activeStep === 0 ? 'Personal Info' : null}
-                        {activeStep === 1 ? 'Payment' : null}
-                        {activeStep === 2 ? 'Review' : null}
-                        {activeStep === 3 ? 'Finish' : null}
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleNext}
+                            className={classes.button}
+                            >
+                            {activeStep === 0 ? 'Billing Info' : null}
+                            {activeStep === 1 ? 'Payment' : null}
+                            {activeStep === 2 ? 'Review' : null}
+                            {activeStep === 3 ? 'Finish' : null}
                         </Button>
                     </div>
                     </div>

@@ -12,6 +12,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
+### `server for db`
+
+Run this command so you activate the feature of saving to database. It will be listening in `localhost:3004`
+
+```
+json-server --watch db.json --port 3004
+```
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br>

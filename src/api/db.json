@@ -1,0 +1,34 @@
+{
+  "checkouts": [
+    {
+      "address": {
+        "street": "584 Castro Street #833",
+        "zipcode": "94114",
+        "country": "Mexico",
+        "city": "San Francisco"
+      },
+      "card": {
+        "cardnumber": "3839 8239 2392 9293",
+        "expiration": "93/93",
+        "fullname": "Imanol Aranzadi"
+      },
+      "fullname": "Imanol Aranzadi",
+      "id": 1
+    },
+    {
+      "address": {
+        "street": "Tehuantepec 245 ",
+        "zipcode": "49489",
+        "country": "United States",
+        "city": "San Felix"
+      },
+      "card": {
+        "cardnumber": "3323 2122 2222 2222",
+        "expiration": "22/22",
+        "fullname": "Yu Lito"
+      },
+      "fullname": "Yu Lito",
+      "id": 2
+    }
+  ]
+}
