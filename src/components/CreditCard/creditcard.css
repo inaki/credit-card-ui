@@ -1,0 +1,39 @@
+.card {
+    font-size: 1rem;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 260px;
+    height: 170px;
+    text-align: left;
+    padding: 30px;
+    margin-bottom: 10px;
+    color: #fff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background: rgb(0,161,219);
+    background: linear-gradient(0deg, rgba(0,161,219,1) 0%, rgba(57,87,153,1) 100%);
+}
+
+.card__number {
+    font-size: 21px;
+    padding: 34px 0 13px 0px;
+    text-align: center;
+}
+
+.card__expiry-date {
+    font-size: 14px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.card__owner {
+    text-align: left;
+}
+
+.card--front {
+    font-size: 16px;
+    font-family: 'Source Code Pro';
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .6);
+}
