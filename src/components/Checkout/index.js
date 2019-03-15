@@ -53,11 +53,16 @@ class Checkout extends React.Component {
         country: '',
         cardnumber: '',
         expiration: '',
-        fullname: ''
+        fullname: '',
+        productNumber: ''
     };
 
+    componentDidMount() {
+        this.setState({productNumber: uniqid()})
+    }
+
     completeTransaction = () => {
-        axios.post('http://localhost:3000/checkouts', {
+        axios.post('http://localhost:3004/checkouts', {
             address: {
                 street: this.state.street,
                 zipcode: this.state.zipcode,
@@ -120,6 +125,7 @@ class Checkout extends React.Component {
                                         width: 90
                                     }}
                                 }
+                                label="Zipcode"
                                 id="zipcode"
                                 placeholder="zipcode"
                                 type="text"
@@ -129,16 +135,33 @@ class Checkout extends React.Component {
                                 onChange={this.handleStepsInput}
                             />
                         </div>
-                        <TextField
-                            id="country"
-                            label="Country"
-                            type="text"
-                            name="country"
-                            margin="normal"
-                            variant="outlined"
-                            fullWidth
-                            onChange={this.handleStepsInput}
-                        />  
+                        <div style={{display: 'flex'}}>
+                            <TextField
+                                InputProps={
+                                    {style: {
+                                        width: 90,
+                                        marginRight: 10
+                                    }}
+                                }
+                                label="State"
+                                id="state"
+                                placeholder="State"
+                                type="text"
+                                name="state"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={this.handleStepsInput}
+                            />
+                            <TextField
+                                id="country"
+                                label="Country"
+                                type="text"
+                                name="country"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={this.handleStepsInput}
+                            />
+                        </div>
                     </div>
                 );
             case 2:
@@ -218,7 +241,7 @@ class Checkout extends React.Component {
             case 3:
                 return (
                     <div style={{maxWidth: 290, minWidth: 290}}>
-                        <Typography>ORDER NUMBER: J4I399877</Typography>
+                        <Typography>Order Number: {this.state.productNumber.toUpperCase()}</Typography>
                         <Typography>OP-Z</Typography>
                         <Typography style={{fontWeight: 'bold'}}>$599.00</Typography><br/>
                     </div>

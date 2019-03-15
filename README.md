@@ -14,9 +14,12 @@ You will also see any lint errors in the console.
 
 ### `server for db`
 
-Run this command so you activate the feature of saving to database. It will be listening in `localhost:3004`
+Run this command so you activate the feature of saving to database. It will be listening in `localhost:3004`.
 
 ```
+// run this
+npm run db-server
+// or
 json-server --watch db.json --port 3004
 ```
 
