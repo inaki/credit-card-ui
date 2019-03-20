@@ -15,7 +15,8 @@ import {
     StepContent,
     Stepper,
     Typography,
-    TextField
+    TextField,
+    Grid
 } from '@material-ui/core';
 
 const styles = theme => ({
@@ -54,7 +55,16 @@ class Checkout extends React.Component {
         cardnumber: '',
         expiration: '',
         fullname: '',
-        productNumber: ''
+        productNumber: '',
+        errors: {
+            street: null,
+            city: null, 
+            zipcode: null,
+            country: null,
+            cardnumber: null,
+            expiration: null,
+            fullname: null,
+        }
     };
 
     componentDidMount() {
@@ -84,27 +94,30 @@ class Checkout extends React.Component {
         switch (step) {
             case 0:
                 return (
-                    <div style={{maxWidth: 290, minWidth: 290}}>
+                    <Grid container style={{maxWidth: 290}}>
                         <img className={this.props.classes.productImage} src={productImage} alt="productimage"/>
                         <Typography>OP-Z</Typography>
                         <Typography>multimedia synthesizer and sequencer</Typography><br/>
                         <Typography style={{fontWeight: 'bold'}}>$599.00</Typography>
-                    </div>
+                    </Grid>
                     );
             case 1:
                 return (
-                    <div style={{maxWidth: 290, minWidth: 290}}>
-                        <TextField
-                            id="street"
-                            label="Street Address"
-                            type="text"
-                            name="street"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={this.handleStepsInput}
-                            fullWidth
-                        />  
-                        <div style={{display: 'flex'}}>
+                    <Grid container style={{maxWidth: 290}}>
+                        <Grid item xs={12}>
+                            <TextField
+                                error={this.state.errors['street'] ? "un error" : null}
+                                id="street"
+                                label="Street Address"
+                                type="text"
+                                name="street"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={this.handleStepsInput}
+                                fullWidth
+                            />  
+                        </Grid>
+                        <Grid item xs={8}>
                             <TextField
                                 InputProps={
                                     {style: {
@@ -119,12 +132,9 @@ class Checkout extends React.Component {
                                 variant="outlined"
                                 onChange={this.handleStepsInput}
                             />
+                        </Grid>
+                        <Grid item xs={4}>
                             <TextField
-                                InputProps={
-                                    {style: {
-                                        width: 90
-                                    }}
-                                }
                                 label="Zipcode"
                                 id="zipcode"
                                 placeholder="zipcode"
@@ -134,8 +144,8 @@ class Checkout extends React.Component {
                                 variant="outlined"
                                 onChange={this.handleStepsInput}
                             />
-                        </div>
-                        <div style={{display: 'flex'}}>
+                        </Grid>
+                        <Grid item xs={4}>
                             <TextField
                                 InputProps={
                                     {style: {
@@ -152,6 +162,8 @@ class Checkout extends React.Component {
                                 variant="outlined"
                                 onChange={this.handleStepsInput}
                             />
+                        </Grid>
+                        <Grid item xs={8}>
                             <TextField
                                 id="country"
                                 label="Country"
@@ -161,19 +173,20 @@ class Checkout extends React.Component {
                                 variant="outlined"
                                 onChange={this.handleStepsInput}
                             />
-                        </div>
-                    </div>
+                        </Grid>
+                    </Grid>
                 );
             case 2:
                 return (
-                    <div style={{maxWidth: 290, minWidth: 290}}>
-                        <CreditCard
-                            styles={{textAlign: 'center'}}
-                            fullname={this.state.fullname}
-                            cardnumber={this.state.cardnumber}
-                            expiration={this.state.expiration}/>
-
-                        <div style={{display: 'flex'}}>
+                    <Grid container style={{maxWidth: 290}}>
+                        <Grid item xs={12}>
+                            <CreditCard
+                                styles={{textAlign: 'center'}}
+                                fullname={this.state.fullname}
+                                cardnumber={this.state.cardnumber}
+                                expiration={this.state.expiration}/>
+                        </Grid>
+                        <Grid item xs={8}>
                             <InputMask
                                 mask="9999 9999 9999 9999"
                                 value={this.state.cardnumber}
@@ -198,7 +211,8 @@ class Checkout extends React.Component {
                                     }
                                 }
                             </InputMask>
-                            
+                        </Grid>
+                        <Grid item xs={4}>
                             <InputMask
                                 mask="99/99"
                                 value={this.state.expiration}
@@ -208,11 +222,6 @@ class Checkout extends React.Component {
                                 {
                                     () => {
                                         return <TextField
-                                            InputProps={
-                                                {style: {
-                                                    width: 90
-                                                }}
-                                            }
                                             id="card-number"
                                             placeholder="XX/YY"
                                             type="text"
@@ -223,19 +232,20 @@ class Checkout extends React.Component {
                                     }
                                 }
                             </InputMask>
-                        </div>
-                        
-                        <TextField
-                            id="fullname"
-                            label="Name On The Card"
-                            type="text"
-                            name="fullname"
-                            value={this.state.fullname}
-                            variant="outlined"
-                            fullWidth
-                            onChange={this.handleStepsInput}
-                        />
-                    </div>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="fullname"
+                                label="Name On The Card"
+                                type="text"
+                                name="fullname"
+                                value={this.state.fullname}
+                                variant="outlined"
+                                fullWidth
+                                onChange={this.handleStepsInput}
+                            />
+                        </Grid>
+                    </Grid>
                 );
                 
             case 3:
@@ -253,16 +263,53 @@ class Checkout extends React.Component {
 
     handleStepsInput = (e) => {
         e.preventDefault();
-        this.setState({[e.target.name]: e.target.value});
+        if(!e.target.value) {
+            this.setState({errors: {[e.target.name]: true}})
+        } else {
+            this.setState({
+                [e.target.name]: e.target.value,
+                errors: {[e.target.name]: false}
+            });
+        }
     }
 
     handleNext = () => {
-        if(this.state.activeStep === 3) {
+        if (this.state.activeStep === 0) {
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+        } else if (this.state.activeStep === 1) {
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+        }  else if (this.state.activeStep === 2) {
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+        }  else if (this.state.activeStep === 3) {
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+        } else {
             this.completeTransaction();
         }
-        this.setState(state => ({
-            activeStep: state.activeStep + 1,
-        }));
+    };
+
+    handleDisabledButton = (step) => {
+        const { street, city, zipcode, country, cardnumber, expiration, fullname } = this.state;
+        if (step === 1) {
+            if(street && city && zipcode && country) {
+                return false;
+            } else {
+                return true;
+            }
+        }  else if (step === 2) {
+            if(cardnumber && expiration && fullname ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     };
 
     handleBack = () => {
@@ -297,6 +344,7 @@ class Checkout extends React.Component {
                             color="primary"
                             onClick={this.handleNext}
                             className={classes.button}
+                            disabled={this.handleDisabledButton(activeStep)}
                             >
                             {activeStep === 0 ? 'Billing Info' : null}
                             {activeStep === 1 ? 'Payment' : null}
