@@ -1,35 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Payment Process UI
 
-## Available Scripts
+This is a simple example of a UI representing a payment process using a credit card. Is build with on top of ReactJS and for the UI is using MaterialUI component library.
 
-In the project directory, you can run:
+### Install and run
 
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `server for db`
-
-Run this command so you activate the feature of saving to database. It will be listening in `localhost:3004`.
+For installing locally simple git clone:
 
 ```
-// run this
-npm run db-server
-// or
-json-server --watch db.json --port 3004
+$ git clone https://github.com/inaki/credit-card-ui
 ```
 
-### `npm run build`
+install dependencies
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+$ cd credit-card-ui
+$ npm istall
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+start the app using a local server, which should open a window on `http://localhost:3000/`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+$ npm start
+```
 
